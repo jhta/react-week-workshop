@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width" />
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <title>App</title>
+  <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+  font-style: italic;
+  color: #EFF6EE;
+}
+
+ul, li {
+  list-style: none;
+}
+
+html, body {
+  height: 100%;
+  position: relative;
+  color: #EFF6EE;
+  font-size: 1rem;
+}
+
+p {
+  font-size: 2rem;
+}
+
+.Wrapper {
+  background-color: rgb(103,44,182); /*top colour*/
+  background-image:         -webkit-linear-gradient(rgb(103,44,182), rgb(7,100,108));
+  background-image:         -moz-linear-gradient(rgb(103,44,182), rgb(7,100,108));
+  background-image:         -o-linear-gradient(rgb(103,44,182), rgb(7,100,108));
+  background-image:         linear-gradient(rgb(103,44,182), rgb(7,100,108));
+  height: 100%;
+  min-height: 100%;
+  position: fixed;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.Container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+}
+
+.--heightCenter {
+  top: 50%;
+  transform: translateY(-80%);
+}
+
+.Block {
+  margin-top: 1rem;
+}
+
+.Button {
+  font-size: 2rem;
+  background: transparent;
+  color: #EFF6EE;
+  padding: .5rem;
+  font-weight: bold;
+  border: 3px solid #EFF6EE;
+  border-radius: 4px; 
+  cursor: pointer;
+  transition: transform .3s ease;
+  margin-right: 1rem;
+  margin-top: 1rem;
+}
+
+
+.Button:hover {
+  background: #EFF6EE;
+  color: rgb(103,44,182);
+  transform: scale(1.03);
+}
+
+.List {
+  margin-bottom: 12rem;
+}
+
+.Item {
+  cursor: pointer;
+  position: relative;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.Item-content img {
+  display: inline-block;
+  width: 97%;
+  border-radius: 5px;
+}
+
+.masonry {
+  column-count: 1;
+  column-gap: 0px;
+}
+
+.cover {
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 100%;
+  width: 98%;
+  z-index: 1000;
+  transition: all .4s ease-in-out;
+  padding: 1rem;
+  color: transparent;
+  display: flex;
+   justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.cover:hover, .cover.added {
+  background: rgba(0,0,0, .5);
+  color: #EFF6EE;
+}
+
+.cover.added {
+  border: 6px solid white;
+}
+.Add {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.Add:hover {
+  text-decoration: underline;
+}
+
+.Title {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+}
+
+.FixedBar {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 1rem;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+@media screen and (min-width: 480px) {
+  .masonry {
+    column-count: 2;
+    column-gap: 5px;
+  }
+}
+
+@media screen and (min-width: 980px) {
+
+  p {
+    font-size: 2.5rem;
+  }
+  
+  .masonry {
+    column-count: 3;
+    column-gap: 10px;
+  }
+
+  .Block {
+    margin-top: 2rem;
+  }
+
+  .Button {
+    font-size: 3rem;
+    padding: 1rem;
+    border: 6px solid #EFF6EE;
+    border-radius: 8px; 
+    margin-right: 1.5rem;
+  }
+
+}
+
+@media screen and (min-width: 1280px) {
+
+  p {
+    font-size: 4rem;
+  }
+
+  .Block {
+    margin-top: 3rem;
+  }
+
+  .Button {
+    font-size: 4rem;
+    margin-right: 2rem;    
+  }
+
+  .Title {
+    font-size: 4rem;
+  }
+  .FixedBar {
+    padding: 2rem;
+  }
+}
+
+
+  </style>
+  <script type='text/babel'>
+
+    const list = [
+      {
+        img: 'https://www.venca.es/i/536791/l/escoba-mecanica-manual-con-rodillo-atrapa-suciedad-verde.jpg',
+        text: 'Licuadora'
+      },
+      {
+        img: 'https://dosconsentidos.com/app/views/includes/utensilios/olla.jpg',
+        text: 'olla'
+      },
+      {
+        img: 'http://www.guiadejardineria.com/wp-content/uploads/2016/08/suculentas-guiadejardineria.jpg',
+        text: 'planta'
+      },
+      {
+        img: 'https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg',
+        text: 'cafetera'
+      },
+      {
+        img: 'https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg',
+        text: 'cafetera2'
+      },
+      {
+        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTteaIWGxe0pk5jeKAnsgTfdxBlbujgQZDdMCvXWM7c51Ib-yP-',
+        text: 'cosa'
+      },
+      {
+        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/FloreroParejasPajaros.JPG/1200px-FloreroParejasPajaros.JPG',
+        text: 'florero'
+      },
+      {
+        img: 'https://dosconsentidos.com/app/views/includes/utensilios/olla.jpg',
+        text: 'olla2'
+      },
+      {
+        img: 'http://www.guiadejardineria.com/wp-content/uploads/2016/08/suculentas-guiadejardineria.jpg',
+        text: 'plantas2'
+      }
+    ]
+
+
+    const Item = ({ img = '', text = '', added = false, onAdd }) => (
+      <li className='Item' onClick={e => { e.preventDefault(); onAdd(text) }}>
+        <article className='Item-content'>
+          <img src={img}/>
+          <div className={`cover ${added ? 'added' : '' }`}>
+            <p className='Add'>{text}</p>
+          </div>
+        </article>
+      </li>
+    )
+
+    const List = ({ show = false, list = [], addItem }) => show
+      ? (
+          <section className='Container'>
+            <ul className='List masonry'>
+              {
+                list.map((item, index) =>
+                  <Item
+                    {...item}
+                    key={index}
+                    onAdd={addItem}
+                  />
+                )
+              }
+            </ul>
+          </section>
+        )
+      : null
+
+    const Button = ({ text = '', onClick }) => (
+      <button className='Button' onClick={onClick} >
+        { text }
+      </button>
+    ) 
+
+    const FixedBar = ({ show = false, count = 0 }) => show
+      ? (
+          <section className='FixedBar' >
+            <p>{ `llevas ${count} productos!` }</p>
+            <div className=''>
+              <Button text='Finalizar'/>
+            </div>
+          </section>
+        )
+      : null
+
+    const Header = ({ onShowContent, onFinish, show = false, showMessageFinish = false }) => (
+      <section className='Container' >
+        <section className='Block'>
+          <h2 className='Title'>Hola Ramiro!</h2>
+          <p>Bienvenido a esta maravillosa tienda virtual, seguro vienes a comprar algo genial</p>
+        </section>
+        {
+          show
+          ? <section className='Block'>
+              <Button
+                text='Awesome, voy a comprar'
+                onClick={onShowContent}
+              />
+              <Button
+                text='Nope :('
+                onClick={onFinish}
+              />
+            </section> 
+          : null
+        }
+        {
+          showMessageFinish
+          ?  <div className='Block'>
+              <p> En otra oportunidad será :/</p>
+            </div>
+          : null
+        }
+      </section>
+    )
+
+    const addItem = (list = [], itemText = '') => list
+      .map(item => item.text === itemText
+        ? ({
+            ...item,
+            added: true
+          })
+        : item
+      )
+
+    class App extends React.Component {
+      constructor (props) {
+        super(props)
+        this.state = {
+          showContent: false,
+          showButtons: true,
+          shoppingList: [],
+          addedItemsCount: 0,
+          showMessageFinish: false,
+          list          
+        }
+      }
+
+      addItem = itemText => {
+        console.log(itemText)
+        const { list } = this.state
+        const newList = addItem(list, itemText) 
+        this.setState({
+          list: newList,
+          addedItemsCount: newList.filter(item => item.added).length
+        }) 
+      }
+
+      onShowContent = event => {
+        event.preventDefault()
+        this.setState({
+          showContent: !this.state.showContent,
+          showButtons: !this.state.showButtons
+        })
+      }
+
+      onFinish = event => {
+        event.preventDefault()
+        this.setState({
+          showButtons: false,
+          showMessageFinish: true
+        })
+      }
+
+      render () {
+          return (
+            <div>
+            <section className='Wrapper'>
+              <Header
+                onShowContent={this.onShowContent}
+                onFinish={this.onFinish}
+                show={this.state.showButtons}
+                showMessageFinish={this.state.showMessageFinish}
+              />
+              <List
+                show={this.state.showContent}
+                list={this.state.list}
+                addItem={this.addItem}
+              />
+            </section>
+            <FixedBar
+              show={this.state.showContent}
+              count={this.state.addedItemsCount}
+            />
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root')
+    );
+  </script>
+</head>
+<body>
+  <div id='root'></div>
+  <section class='Wrapper' style='display: none'>
+    <section class='Container' >
+      <section class='Block'>
+        <h2 class='Title'>Hola Rodolfo!</h2>
+        <p>Bienvenido a esta maravillosa tienda virtual, seguro vienes a comprar algo genial</p>
+      </section>
+      <section class='Block'>
+        <button class='Button'>Awesome, voy a comprar</button>
+        <button class='Button'>Nope :(</button>
+      </section>
+    </section>
+    
+    <section class='Container'>
+      <ul class='List masonry'>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://www.venca.es/i/536791/l/escoba-mecanica-manual-con-rodillo-atrapa-suciedad-verde.jpg'/>
+            <div class='cover'>
+              
+              <p class='Add'>Agregar</p>
+            </div>
+          </article>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://dosconsentidos.com/app/views/includes/utensilios/olla.jpg'/>
+            <div class='cover'>
+              trapeadora
+            </div>
+          </article>
+        </li>
+        
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='http://www.guiadejardineria.com/wp-content/uploads/2016/08/suculentas-guiadejardineria.jpg'/>
+          </article>
+          <div class='cover'>
+            trapeadora
+          </div>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg'/>
+            <div class='cover'>
+              trapeadora
+            </div>
+          </article>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTteaIWGxe0pk5jeKAnsgTfdxBlbujgQZDdMCvXWM7c51Ib-yP-'/>
+          </article>
+          <div class='cover'>
+            trapeadora
+          </div>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/FloreroParejasPajaros.JPG/1200px-FloreroParejasPajaros.JPG'/>
+          </article>
+          <div class='cover added'>
+            trapeadora
+          </div>
+  
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='http://www.guiadejardineria.com/wp-content/uploads/2016/08/suculentas-guiadejardineria.jpg'/>
+          </article>
+          <div class='cover'>
+            trapeadora
+          </div>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg'/>
+            <div class='cover'>
+              trapeadora
+            </div>
+          </article>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTteaIWGxe0pk5jeKAnsgTfdxBlbujgQZDdMCvXWM7c51Ib-yP-'/>
+          </article>
+          <div class='cover'>
+            trapeadora
+          </div>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/FloreroParejasPajaros.JPG/1200px-FloreroParejasPajaros.JPG'/>
+          </article>
+          <div class='cover added'>
+            trapeadora
+          </div>
+        </li>
+
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='http://www.guiadejardineria.com/wp-content/uploads/2016/08/suculentas-guiadejardineria.jpg'/>
+          </article>
+          <div class='cover'>
+            trapeadora
+          </div>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg'/>
+            <div class='cover'>
+              trapeadora
+            </div>
+          </article>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTteaIWGxe0pk5jeKAnsgTfdxBlbujgQZDdMCvXWM7c51Ib-yP-'/>
+          </article>
+          <div class='cover'>
+            trapeadora
+          </div>
+        </li>
+        <li class='Item'>
+          <article class='Item-content'>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/FloreroParejasPajaros.JPG/1200px-FloreroParejasPajaros.JPG'/>
+          </article>
+          <div class='cover added'>
+            trapeadora
+          </div>
+        </li>
+
+        </li>
+      </ul>
+    </section>
+  </section>
+  <section class='FixedBar' style='display: none;' >
+    <p> Omg! llevas 5 productos!</p>
+    <div class=''><button class='Button'>Finalizar</button></div>
+  </section>
+
+</body>
+</html>
+    
+    
+    
+    
+    
+       
