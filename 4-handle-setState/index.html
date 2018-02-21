@@ -48,7 +48,7 @@ p {
 
 .Container {
   padding: 1rem;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   position: relative;
   width: 100%;
@@ -149,7 +149,7 @@ p {
   position: fixed;
   left: 0;
   bottom: 0;
-  padding: 2rem;
+  padding: 1rem;
   background: rgba(0,0,0,0.8);
   display: flex;
   justify-content: space-between;
@@ -167,27 +167,48 @@ p {
 @media screen and (min-width: 980px) {
 
   p {
-    font-size: 4rem;
+    font-size: 2.5rem;
   }
   
   .masonry {
     column-count: 3;
     column-gap: 10px;
   }
+
+  .Block {
+    margin-top: 2rem;
+  }
+
+  .Button {
+    font-size: 3rem;
+    padding: 1rem;
+    border: 6px solid #EFF6EE;
+    border-radius: 8px; 
+    margin-right: 1.5rem;
+  }
+
+}
+
+@media screen and (min-width: 1280px) {
+
+  p {
+    font-size: 4rem;
+  }
+
   .Block {
     margin-top: 3rem;
   }
 
   .Button {
     font-size: 4rem;
-    padding: 1rem;
-    border: 6px solid #EFF6EE;
-    border-radius: 8px; 
-    margin-right: 2rem;
+    margin-right: 2rem;    
   }
 
   .Title {
-    font-size: 6rem;
+    font-size: 4rem;
+  }
+  .FixedBar {
+    padding: 2rem;
   }
 }
 
@@ -202,88 +223,78 @@ p {
       },
       {
         img: 'https://dosconsentidos.com/app/views/includes/utensilios/olla.jpg',
-        text: 'Licuadora'
+        text: 'olla'
       },
       {
         img: 'http://www.guiadejardineria.com/wp-content/uploads/2016/08/suculentas-guiadejardineria.jpg',
-        text: 'Licuadora'
+        text: 'planta'
       },
       {
         img: 'https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg',
-        text: 'Licuadora'
+        text: 'cafetera'
       },
       {
         img: 'https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg',
-        text: 'Licuadora'
+        text: 'cafetera2'
       },
       {
         img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTteaIWGxe0pk5jeKAnsgTfdxBlbujgQZDdMCvXWM7c51Ib-yP-',
-        text: 'Licuadora'
+        text: 'cosa'
       },
       {
         img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/FloreroParejasPajaros.JPG/1200px-FloreroParejasPajaros.JPG',
-        text: 'Licuadora'
+        text: 'florero'
       },
       {
         img: 'https://dosconsentidos.com/app/views/includes/utensilios/olla.jpg',
-        text: 'Licuadora'
+        text: 'olla2'
       },
       {
         img: 'http://www.guiadejardineria.com/wp-content/uploads/2016/08/suculentas-guiadejardineria.jpg',
-        text: 'Licuadora'
-      },
-      {
-        img: 'https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg',
-        text: 'Licuadora'
-      },
-      {
-        img: 'https://d243u7pon29hni.cloudfront.net/images/products/cafetera-de-goteo_taurus_verona12_frontal_l.jpg',
-        text: 'Licuadora'
-      },
-      {
-        img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTteaIWGxe0pk5jeKAnsgTfdxBlbujgQZDdMCvXWM7c51Ib-yP-',
-        text: 'Licuadora'
-      },
-      {
-        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/FloreroParejasPajaros.JPG/1200px-FloreroParejasPajaros.JPG',
-        text: 'Licuadora'
+        text: 'plantas2'
       }
     ]
 
 
-    const Item = ({ img = '', text = '' }) => (
-      <li className='Item'>
+    const Item = ({ img = '', text = '', added = false, onAdd }) => (
+      <li className='Item' onClick={e => { e.preventDefault(); onAdd(text) }}>
         <article className='Item-content'>
           <img src={img}/>
-          <div className='cover'>
+          <div className={`cover ${added ? 'added' : '' }`}>
             <p className='Add'>{text}</p>
           </div>
         </article>
       </li>
     )
 
-    const List = ({ show = false, list = [] }) => !show
+    const List = ({ show = false, list = [], addItem }) => show
       ? (
           <section className='Container'>
             <ul className='List masonry'>
               {
-                list.map((item, index) => <Item {...item} key={index} />)
+                list.map((item, index) =>
+                  <Item
+                    {...item}
+                    key={index}
+                    onAdd={addItem}
+                  />
+                )
               }
             </ul>
           </section>
         )
       : null
 
-    const Button = ({ text }) => (
-      <button className='Button'>
+    const Button = ({ text = '', onClick }) => (
+      <button className='Button' onClick={onClick} >
         { text }
       </button>
     ) 
 
-    const FixedBar = ({ show = false }) => show
+    const FixedBar = ({ show = false, count = 0 }) => show
       ? (
           <section className='FixedBar' >
-            <p> Omg! llevas 5 productos!</p>
+            <p>{ `llevas ${count} productos!` }</p>
             <div className=''>
               <Button text='Finalizar'/>
             </div>
@@ -291,39 +302,104 @@ p {
         )
       : null
 
-    const Header = props => (
+    const Header = ({ onShowContent, onFinish, show = false, showMessageFinish = false }) => (
       <section className='Container' >
         <section className='Block'>
           <h2 className='Title'>Hola Ramiro!</h2>
           <p>Bienvenido a esta maravillosa tienda virtual, seguro vienes a comprar algo genial</p>
         </section>
-        <section className='Block'>
-          <Button text='Awesome, voy a comprar' />
-          <Button text='Nope :(' />
-        </section>
+        {
+          show
+          ? <section className='Block'>
+              <Button
+                text='Awesome, voy a comprar'
+                onClick={onShowContent}
+              />
+              <Button
+                text='Nope :('
+                onClick={onFinish}
+              />
+            </section> 
+          : null
+        }
+        {
+          showMessageFinish
+          ?  <div className='Block'>
+              <p> En otra oportunidad será :/</p>
+            </div>
+          : null
+        }
       </section>
     )
+
+    const addItem = (list = [], itemText = '') => list
+      .map(item => item.text === itemText
+        ? ({
+            ...item,
+            added: true
+          })
+        : item
+      )
 
     class App extends React.Component {
       constructor (props) {
         super(props)
         this.state = {
           showContent: false,
+          showButtons: true,
+          shoppingList: [],
+          addedItemsCount: 0,
+          showMessageFinish: false,
           list          
         }
-
       }
+
+      addItem = itemText => {
+        console.log(itemText)
+        const { list } = this.state
+        const newList = addItem(list, itemText) 
+        this.setState({
+          list: newList,
+          addedItemsCount: newList.filter(item => item.added).length
+        }) 
+      }
+
+      onShowContent = event => {
+        event.preventDefault()
+        this.setState({
+          showContent: !this.state.showContent,
+          showButtons: !this.state.showButtons
+        })
+      }
+
+      onFinish = event => {
+        event.preventDefault()
+        this.setState({
+          showButtons: false,
+          showMessageFinish: true
+        })
+      }
+
       render () {
           return (
             <div>
             <section className='Wrapper'>
-              <Header />
+              <Header
+                onShowContent={this.onShowContent}
+                onFinish={this.onFinish}
+                show={this.state.showButtons}
+                showMessageFinish={this.state.showMessageFinish}
+              />
               <List
                 show={this.state.showContent}
                 list={this.state.list}
+                addItem={this.addItem}
               />
             </section>
-            <FixedBar show={this.state.showContent}/>
+            <FixedBar
+              show={this.state.showContent}
+              count={this.state.addedItemsCount}
+            />
           </div>
         )
       }
