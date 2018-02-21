@@ -1,0 +1,39 @@
+
+.Item {
+  cursor: pointer;
+  position: relative;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.Item-content img {
+  display: inline-block;
+  width: 97%;
+  border-radius: 5px;
+}
+
+.cover {
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 100%;
+  width: 98%;
+  z-index: 1000;
+  transition: all .4s ease-in-out;
+  padding: 1rem;
+  color: transparent;
+  display: flex;
+   justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.cover:hover, .cover.added {
+  background: rgba(0,0,0, .5);
+  color: #EFF6EE;
+}
+
+.cover.added {
+  border: 6px solid white;
+}
+

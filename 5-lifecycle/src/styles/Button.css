@@ -1,0 +1,37 @@
+.Button {
+  font-size: 2rem;
+  background: transparent;
+  color: #EFF6EE;
+  padding: .5rem;
+  font-weight: bold;
+  border: 3px solid #EFF6EE;
+  border-radius: 4px; 
+  cursor: pointer;
+  transition: transform .3s ease;
+  margin-right: 1rem;
+  margin-top: 1rem;
+}
+
+.Button:hover {
+  background: #EFF6EE;
+  color: rgb(103,44,182);
+  transform: scale(1.03);
+}
+
+@media screen and (min-width: 980px) {
+  .Button {
+    font-size: 3rem;
+    padding: 1rem;
+    border: 6px solid #EFF6EE;
+    border-radius: 8px; 
+    margin-right: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .Button {
+    font-size: 4rem;
+    margin-right: 2rem;
+  }
+}
+

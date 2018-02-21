@@ -1,0 +1,18 @@
+.FixedBar {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 1rem;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (min-width: 1280px) {
+  .FixedBar {
+    padding: 2rem;
+  }
+}
+
