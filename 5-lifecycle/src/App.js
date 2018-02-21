@@ -27,6 +27,9 @@ class App extends React.Component {
     }
   }
 
+  componentDidMount () {
+  }
+
   addItem = itemText => {
     const { list } = this.state
     const newList = addItem(list, itemText)
